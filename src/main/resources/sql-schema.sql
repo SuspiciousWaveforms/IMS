@@ -35,3 +35,6 @@ CREATE TABLE IF NOT EXISTS `ims`.`items` (
 
 ALTER TABLE `items`
 ADD `item_price` DOUBLE DEFAULT NULL;
+
+ALTER TABLE `items`
+MODIFY `item_name` VARCHAR(40);
