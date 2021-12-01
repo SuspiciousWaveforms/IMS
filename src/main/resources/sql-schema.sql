@@ -32,3 +32,6 @@ CREATE TABLE IF NOT EXISTS `ims`.`items` (
     `item_name` INT(11) DEFAULT NULL,
     PRIMARY KEY (`item_id`)
 );
+
+ALTER TABLE `items`
+ADD `item_price` DOUBLE DEFAULT NULL;
