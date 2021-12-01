@@ -1,6 +1,5 @@
 package com.qa.ims.persistence.dao;
 
-import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
 
@@ -38,7 +37,7 @@ public class OrderDAO implements Dao<Order> {
     @Override
     public Order read(Long order_id) {
         try (Connection connection = DBUtils.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders WHERE id = ?");) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders WHERE order_id = ?");) {
             statement.setLong(1, order_id);
             try (ResultSet resultSet = statement.executeQuery();) {
                 resultSet.next();
@@ -68,11 +67,30 @@ public class OrderDAO implements Dao<Order> {
 
     @Override
     public Order update(Order order) {
+        try (Connection connection = DBUtils.getInstance().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("UPDATE orders SET customer_id = ? WHERE order_id = ?");) {
+            statement.setLong(1, order.getCustomerId());
+            statement.setLong(3, order.getOrderId());
+            statement.executeUpdate();
+            return read(order.getOrderId());
+        } catch (Exception e) {
+            LOGGER.debug(e);
+            LOGGER.error(e.getMessage());
+        }
         return null;
     }
 
     @Override
     public int delete(long id) {
+        try (Connection connection = DBUtils.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM orders WHERE order_id = ?");) {
+            statement.setLong(1, id);
+            return statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.debug(e);
+            LOGGER.error(e.getMessage());
+        }
         return 0;
     }
 
