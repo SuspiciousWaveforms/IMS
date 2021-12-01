@@ -2,6 +2,7 @@ package com.qa.ims.controller;
 
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 import org.apache.logging.log4j.LogManager;
@@ -23,12 +24,22 @@ public class OrderController implements CrudController<Order> {
 
     @Override
     public List<Order> readAll() {
-        return null;
+        List<Order> orders = orderDAO.readAll();
+        for (Order order : orders) {
+            LOGGER.info(order);
+        }
+        return orders;
     }
 
     @Override
     public Order create() {
-        return null;
+        LOGGER.info("Please enter an order id");
+        Long order_id = utils.getLong();
+        LOGGER.info("Please enter a customer id");
+        Long customer_id = utils.getLong();
+        Order order = orderDAO.create(new Order(order_id, customer_id));
+        LOGGER.info("Order created");
+        return order;
     }
 
     @Override
