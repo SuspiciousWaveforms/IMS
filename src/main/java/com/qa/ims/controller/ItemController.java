@@ -2,6 +2,7 @@ package com.qa.ims.controller;
 
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.dao.ItemDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.Utils;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,11 @@ public class ItemController implements CrudController<Item> {
 
     @Override
     public List<Item> readAll() {
-        return null;
+        List<Item> items = itemDAO.readAll();
+        for (Item item : items) {
+            LOGGER.info(item);
+        }
+        return items;
     }
 
     @Override
@@ -44,6 +49,8 @@ public class ItemController implements CrudController<Item> {
 
     @Override
     public int delete() {
-        return 0;
+        LOGGER.info("Please enter the id of the item you would like to delete");
+        Long id = utils.getLong();
+        return itemDAO.delete(id);
     }
 }
